@@ -64,7 +64,7 @@
 // }
 func main(){
 	x:=23
-	
+	y:=10
 }
 
 //end of program
