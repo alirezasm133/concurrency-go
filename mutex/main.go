@@ -62,5 +62,10 @@
 // 	wg.Wait()
 // 	fmt.Println(x.test)
 // }
+func main(){
 
+	
+}
+
+//end of program
 
