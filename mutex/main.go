@@ -63,7 +63,7 @@
 // 	fmt.Println(x.test)
 // }
 func main(){
-
+	x:=23
 	
 }
 
