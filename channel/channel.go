@@ -23,21 +23,38 @@
 // }
 
 //practice2
-package main
-import("fmt")
+// package main
+// import("fmt")
 
+// func main(){
+// 	ch:=make(chan string)
+// 	go func(){
+// 		ch<-"Go"
+// 		ch<-"is"
+// 		ch<-"awesome"
+// 		close(ch)
+// 	}()
+// 	//fmt.Println(<-ch)
+// 	// fmt.Println(<-ch)
+// 	// fmt.Println(<-ch)
+// 	for value:=range ch{
+// 		fmt.Println(value)
+// 	}
+// }
+
+//practice 3
+package main
+
+import(
+	"fmt"
+	"time"
+)
 func main(){
 	ch:=make(chan string)
 	go func(){
-		ch<-"Go"
-		ch<-"is"
-		ch<-"awesome"
-		close(ch)
+		time.Sleep(2* time.Second)
+		ch<-"Hello"
 	}()
-	//fmt.Println(<-ch)
-	// fmt.Println(<-ch)
-	// fmt.Println(<-ch)
-	for value:=range ch{
-		fmt.Println(value)
-	}
+	fmt.Println(<-ch)
+
 }
