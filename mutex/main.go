@@ -163,32 +163,66 @@
 // 	}
 // 	wg.Wait()
 // }
+// package main
+// import (
+// 	"sync"
+// )
+
+// func main(){
+// 	var mu1 sync.Mutex
+// 	var mu2 sync.Mutex
+// 	x:=10
+// 	go	func(){
+// 		mu1.Lock()
+// 		mu2.Lock()
+// 		x++
+// 		mu2.Unlock()
+// 		mu1.Unlock()
+		
+// 	}
+// 	go func(){
+// 		mu1.Lock()
+// 		mu2.Lock()
+// 		x++
+// 		mu2.Unlock()
+// 		mu1.Unlock()		
+// 	}
+
+// }
+
 package main
-import (
+
+
+import(
+	"fmt"
 	"sync"
 )
 
-func main(){
-	var mu1 sync.Mutex
-	var mu2 sync.Mutex
-	x:=10
-	go	func(){
-		mu1.Lock()
-		mu2.Lock()
-		x++
-		mu2.Unlock()
-		mu1.Unlock()
-		
-	}
-	go func(){
-		mu1.Lock()
-		mu2.Lock()
-		x++
-		mu2.Unlock()
-		mu1.Unlock()		
-	}
-
+type Counter struct {
+    mu    sync.Mutex
+    value int
 }
+func (c *Counter) Increment() {
+    c.mu.Lock()
+	c.value++
+	c.mu.Unlock()
+}
+func main(){
+	c:=Counter{value:0}
+	var wg sync.WaitGroup
+	wg.Add(100)
+	for i:=0;i<100;i++{
+		go func(){
+			defer wg.Done()
+			for j:=0;j<1000;j++{
+				c.Increment()
+			}
+		}()
+	}
+	wg.Wait()
+	fmt.Println(c.value)
+}
+
 
 //end of program
 
