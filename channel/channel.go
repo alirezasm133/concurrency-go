@@ -84,3 +84,24 @@
 // 	ch2<-x
 // 	wg.Wait()
 // }
+
+package main
+
+import(
+	"fmt"
+)
+func main(){
+	ch:=make(chan int)
+	for i:=0;i<3;i++{
+		go func(){
+			ch<-i
+		}()
+	}
+	y:=0
+	for i:=0;i<3;i++{
+		x:=<-ch
+		y+=x
+
+	}
+	fmt.Println(y)
+}
