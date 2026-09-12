@@ -123,47 +123,72 @@
 // 	wg.Wait()
 // }
 
-package main
+// package main
 
-import(
-	"fmt"
+// import(
+// 	"fmt"
+// 	"sync"
+// )
+
+// type Product struct{
+// 	mu sync.Mutex
+// 	Name string
+// 	Stock int
+// }
+// func (p *Product)Buying(){
+// 	p.mu.Lock()
+// 	defer p.mu.Unlock()
+// 	if p.Stock <=0{
+// 		fmt.Println("inventory is not enough")
+// 		return
+// 	}else{
+		
+// 		p.Stock--
+		
+// 		fmt.Println("the product ",p.Name," added to your Shopping Cart")
+// 	} 
+// }
+
+
+
+// func main(){
+// 	p:=Product{Name:"scarf",Stock:1}
+// 	var wg sync.WaitGroup
+// 	wg.Add(7)
+// 	for i:=0;i<7;i++{
+// 		go func(){
+// 				defer wg.Done()
+// 				p.Buying()
+// 		}()
+// 	}
+// 	wg.Wait()
+// }
+package main
+import (
 	"sync"
 )
 
-type Product struct{
-	mu sync.Mutex
-	Name string
-	Stock int
-}
-func (p *Product)Buying(){
-	p.mu.Lock()
-	defer p.mu.Unlock()
-	if p.Stock <=0{
-		fmt.Println("inventory is not enough")
-		return
-	}else{
-		
-		p.Stock--
-		
-		fmt.Println("the product ",p.Name," added to your Shopping Cart")
-	} 
-}
-
-
-
 func main(){
-	p:=Product{Name:"scarf",Stock:1}
-	var wg sync.WaitGroup
-	wg.Add(7)
-	for i:=0;i<7;i++{
-		go func(){
-				defer wg.Done()
-				p.Buying()
-		}()
+	var mu1 sync.Mutex
+	var mu2 sync.Mutex
+	x:=10
+	go	func(){
+		mu1.Lock()
+		mu2.Lock()
+		x++
+		mu2.Unlock()
+		mu1.Unlock()
+		
 	}
-	wg.Wait()
-}
+	go func(){
+		mu1.Lock()
+		mu2.Lock()
+		x++
+		mu2.Unlock()
+		mu1.Unlock()		
+	}
 
+}
 
 //end of program
 
