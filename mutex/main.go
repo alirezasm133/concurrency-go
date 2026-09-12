@@ -93,127 +93,20 @@ func main(){
 	wg.Add(10)
 	r:=RateLimiter{count: 0,}
 
-	go func(){
-		defer wg.Done()
-		b:=r.Allow()
-		if b== true{
-			fmt.Println("accepted")
-			return
-		}else{
-			fmt.Println("access denied")
-			return
-		}
-	}()
+	for i=0;i<10;i++{
+		go func(){
+			defer wg.Done()
+			b:=r.Allow()
+			if b== true{
+				fmt.Println("accepted")
+				return
+			}else{
+				fmt.Println("access denied")
+				return
+			}
+		}()	
+	}
 
-	go func(){
-		defer wg.Done()
-		b:=r.Allow()
-		if b== true{
-			fmt.Println("accepted")
-			return
-		}else{
-			fmt.Println("access denied")
-			return
-		}
-	}()
-	
-	go func(){
-		defer wg.Done()
-		b:=r.Allow()
-		if b== true{
-			fmt.Println("accepted")
-			return
-		}else{
-			fmt.Println("access denied")
-			return
-		}
-	}()
-
-	go func(){
-		defer wg.Done()
-		b:=r.Allow()
-		if b== true{
-			fmt.Println("accepted")
-			return
-		}else{
-			fmt.Println("access denied")
-			return
-		}
-	}()
-
-	go func(){
-		defer wg.Done()
-		b:=r.Allow()
-		if b== true{
-			fmt.Println("accepted")
-			return
-		}else{
-			fmt.Println("access denied")
-			return
-		}
-	}()
-
-	go func(){
-		defer wg.Done()
-		b:=r.Allow()
-		if b== true{
-			fmt.Println("accepted")
-			return
-		}else{
-			fmt.Println("access denied")
-			return
-		}
-	}()
-
-	go func(){
-		defer wg.Done()
-		b:=r.Allow()
-		if b== true{
-			fmt.Println("accepted")
-			return
-		}else{
-			fmt.Println("access denied")
-			return
-		}
-	}()
-
-	go func(){
-		defer wg.Done()
-		b:=r.Allow()
-		if b== true{
-			fmt.Println("accepted")
-			return
-		}else{
-			fmt.Println("access denied")
-			return
-		}
-	}()	
-
-
-	go func(){
-		defer wg.Done()
-		b:=r.Allow()
-		if b== true{
-			fmt.Println("accepted")
-			return
-		}else{
-			fmt.Println("access denied")
-			return
-		}
-	}()
-
-
-	go func(){
-		defer wg.Done()
-		b:=r.Allow()
-		if b== true{
-			fmt.Println("accepted")
-			return
-		}else{
-			fmt.Println("access denied")
-			return
-		}
-	}()
 	wg.Wait()
 }
 
