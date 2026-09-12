@@ -63,65 +63,107 @@
 // 	fmt.Println(x.test)
 // }
 
+// package main
+// import (
+// 	"fmt"
+// 	"sync"
+// 	"time"
+// )
+
+// type RateLimiter struct{
+// 	mu sync.Mutex
+// 	count int
+// }
+
+// func (r *RateLimiter)Allow()bool{
+// 	defer r.mu.Unlock()
+// 	r.mu.Lock()
+// 	if r.count < 5{
+// 		r.count++
+// 		return true
+
+// 	}else{
+// 		fmt.Println("request is more than 5/persecond")
+// 		return false
+// 	}
+
+// }
+
+// func (r *RateLimiter)StartReset(){
+// 	ticker := time.NewTicker(time.Second)
+// 	for{
+// 		<-ticker.C
+// 		r.mu.Lock()
+// 		r.count=0
+// 		r.mu.Unlock()
+// 	}
+// }
+// func main(){
+// 	var wg sync.WaitGroup
+// 	wg.Add(11)
+// 	r:=RateLimiter{count: 0,}
+
+// 	for i:=0;i<10;i++{
+// 		go func(){
+// 			defer wg.Done()
+// 			b:=r.Allow()
+// 			if b == true{
+// 				fmt.Println("accepted")
+// 				return
+// 			}else{
+// 				fmt.Println("access denied")
+// 				return
+// 			}
+// 		}()	
+// 	}
+// 	go func(){
+// 		defer wg.Done()
+// 		go r.StartReset()
+// 	}()
+// 	wg.Wait()
+// }
+
 package main
-import (
+
+import(
 	"fmt"
 	"sync"
-	"time"
 )
 
-type RateLimiter struct{
+type Product struct{
 	mu sync.Mutex
-	count int
+	Name string
+	Stock int
 }
-
-func (r *RateLimiter)Allow()bool{
-	defer r.mu.Unlock()
-	r.mu.Lock()
-	if r.count < 5{
-		r.count++
-		return true
-
+func (p *Product)Buying(){
+	p.mu.Lock()
+	defer p.mu.Unlock()
+	if p.Stock <=0{
+		fmt.Println("inventory is not enough")
+		return
 	}else{
-		fmt.Println("request is more than 5/persecond")
-		return false
-	}
-
+		
+		p.Stock--
+		
+		fmt.Println("the product ",p.Name," added to your Shopping Cart")
+	} 
 }
 
-func (r *RateLimiter)StartReset(){
-	ticker := time.NewTicker(time.Second)
-	for{
-		<-ticker.C
-		r.mu.Lock()
-		r.count=0
-		r.mu.Unlock()
-	}
-}
+
+
 func main(){
+	p:=Product{Name:"scarf",Stock:1}
 	var wg sync.WaitGroup
-	wg.Add(11)
-	r:=RateLimiter{count: 0,}
-
-	for i:=0;i<10;i++{
+	wg.Add(7)
+	for i:=0;i<7;i++{
 		go func(){
-			defer wg.Done()
-			b:=r.Allow()
-			if b == true{
-				fmt.Println("accepted")
-				return
-			}else{
-				fmt.Println("access denied")
-				return
-			}
-		}()	
+				defer wg.Done()
+				p.Buying()
+		}()
 	}
-	go func(){
-		defer wg.Done()
-		go r.StartReset()
-	}()
 	wg.Wait()
 }
+
 
 //end of program
 
