@@ -43,18 +43,44 @@
 // }
 
 //practice 3
-package main
+// package main
 
-import(
-	"fmt"
-	"time"
-)
-func main(){
-	ch:=make(chan string)
-	go func(){
-		time.Sleep(2* time.Second)
-		ch<-"Hello"
-	}()
-	fmt.Println(<-ch)
+// import(
+// 	"fmt"
+// 	"time"
+// )
+// func main(){
+// 	ch:=make(chan string)
+// 	go func(){
+// 		time.Sleep(2* time.Second)
+// 		ch<-"Hello"
+// 	}()
+// 	fmt.Println(<-ch)
 
-}
+// }
+
+//practice4
+// package main
+
+// import(
+// 	"fmt"
+// 	"sync"
+// )
+// func main(){
+// 	var wg sync.WaitGroup
+// 	wg.Add(1)
+
+// 	ch1:=make(chan int)
+// 	ch2:=make(chan int)
+// 	go func(){
+// 		defer wg.Done()
+// 		ch1<-10
+// 		fmt.Println(<-ch2)
+// 	}()
+// 	//x:=0
+	
+// 	x:=<-ch1
+// 	x=x*2
+// 	ch2<-x
+// 	wg.Wait()
+// }
