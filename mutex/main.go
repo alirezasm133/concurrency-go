@@ -62,9 +62,159 @@
 // 	wg.Wait()
 // 	fmt.Println(x.test)
 // }
+
+package main
+import (
+	"fmt"
+	"sync"
+)
+
+type RateLimiter struct{
+	mu sync.Mutex
+	count int
+}
+
+func (r *RateLimiter)Allow()bool{
+	defer r.mu.Unlock()
+	r.mu.Lock()
+	if r.count < 5{
+		r.count++
+		return true
+
+	}else{
+		fmt.Println("request is more than 5/persecond")
+		return false
+	}
+
+}
+
 func main(){
-	x:=23
-	y:=10
+	var wg sync.WaitGroup
+	wg.Add(10)
+	r:=RateLimiter{count: 0,}
+
+	go func(){
+		defer wg.Done()
+		b:=r.Allow()
+		if b== true{
+			fmt.Println("accepted")
+			return
+		}else{
+			fmt.Println("access denied")
+			return
+		}
+	}()
+
+	go func(){
+		defer wg.Done()
+		b:=r.Allow()
+		if b== true{
+			fmt.Println("accepted")
+			return
+		}else{
+			fmt.Println("access denied")
+			return
+		}
+	}()
+	
+	go func(){
+		defer wg.Done()
+		b:=r.Allow()
+		if b== true{
+			fmt.Println("accepted")
+			return
+		}else{
+			fmt.Println("access denied")
+			return
+		}
+	}()
+
+	go func(){
+		defer wg.Done()
+		b:=r.Allow()
+		if b== true{
+			fmt.Println("accepted")
+			return
+		}else{
+			fmt.Println("access denied")
+			return
+		}
+	}()
+
+	go func(){
+		defer wg.Done()
+		b:=r.Allow()
+		if b== true{
+			fmt.Println("accepted")
+			return
+		}else{
+			fmt.Println("access denied")
+			return
+		}
+	}()
+
+	go func(){
+		defer wg.Done()
+		b:=r.Allow()
+		if b== true{
+			fmt.Println("accepted")
+			return
+		}else{
+			fmt.Println("access denied")
+			return
+		}
+	}()
+
+	go func(){
+		defer wg.Done()
+		b:=r.Allow()
+		if b== true{
+			fmt.Println("accepted")
+			return
+		}else{
+			fmt.Println("access denied")
+			return
+		}
+	}()
+
+	go func(){
+		defer wg.Done()
+		b:=r.Allow()
+		if b== true{
+			fmt.Println("accepted")
+			return
+		}else{
+			fmt.Println("access denied")
+			return
+		}
+	}()	
+
+
+	go func(){
+		defer wg.Done()
+		b:=r.Allow()
+		if b== true{
+			fmt.Println("accepted")
+			return
+		}else{
+			fmt.Println("access denied")
+			return
+		}
+	}()
+
+
+	go func(){
+		defer wg.Done()
+		b:=r.Allow()
+		if b== true{
+			fmt.Println("accepted")
+			return
+		}else{
+			fmt.Println("access denied")
+			return
+		}
+	}()
+	wg.Wait()
 }
 
 //end of program
