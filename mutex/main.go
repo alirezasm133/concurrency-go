@@ -67,6 +67,7 @@ package main
 import (
 	"fmt"
 	"sync"
+	"time"
 )
 
 type RateLimiter struct{
@@ -88,16 +89,25 @@ func (r *RateLimiter)Allow()bool{
 
 }
 
+func (r *RateLimiter)StartReset(){
+	ticker := time.NewTicker(time.Second)
+	for{
+		<-ticker.C
+		r.mu.Lock()
+		r.count=0
+		r.mu.Unlock()
+	}
+}
 func main(){
 	var wg sync.WaitGroup
-	wg.Add(10)
+	wg.Add(11)
 	r:=RateLimiter{count: 0,}
 
-	for i=0;i<10;i++{
+	for i:=0;i<10;i++{
 		go func(){
 			defer wg.Done()
 			b:=r.Allow()
-			if b== true{
+			if b == true{
 				fmt.Println("accepted")
 				return
 			}else{
@@ -106,7 +116,10 @@ func main(){
 			}
 		}()	
 	}
-
+	go func(){
+		defer wg.Done()
+		go r.StartReset()
+	}()
 	wg.Wait()
 }
 
